@@ -10,19 +10,19 @@ The sample in this repository provides the context of the environment the templa
 You can reference the linked template from your own deployment template by adding a linked deployment resource to your template
 
 ``` json
-"resources": [
-    {
-        "name": "getContext",
-        "type": "Microsoft.Resources/deployments",
-        "apiVersion": "2015-01-01",
-        "properties": {
-            "mode": "Incremental",
-            "templateLink": {
-                "uri": "https://raw.githubusercontent.com/marcvaneijk/azure-resource-manager-context/master/linked/context.json",
-                "contentVersion": "1.0.0.0"
+    "resources": [
+        {
+            "name": "getContext",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2015-01-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/marcvaneijk/azure-resource-manager-context/master/linked/context.json",
+                    "contentVersion": "1.0.0.0"
+                }
             }
-        }
-    } 
+        } 
 ```
 
 The output from the linked template return on of the following values (baes on the environment the deployment is executed against)
@@ -36,7 +36,12 @@ The output from the linked template return on of the following values (baes on t
 You can reference the output from the linked template by referencing the output in your main template.
 
 ``` json
-[reference('getContext').outputs.cloud.value]
+    "outputs": {
+        "cloud": {
+            "value": "[reference('getContext').outputs.cloud.value]",
+            "type": "string"
+        }
+    }
 ```
 For example, if you want to skip a resource deployment on Azure Stack, but deploy the resource on other clouds your resource configuration requires the following condition
 ``` json
@@ -45,8 +50,6 @@ For example, if you want to skip a resource deployment on Azure Stack, but deplo
             "condition": "[not(equals(reference('getContext').outputs.cloud.value,'AzureStack'))]",
             "type": "Microsoft.Automation",
             "name": "[variables('runBookName')]",
-            ...
-        },
 ```
 The templates in this reposiotry are only provided as an example.
 The storage account created in the linked template is only used for retrieving the endpoint. You can copy/fork the templates and make changes to it to better fit your need.
