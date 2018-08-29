@@ -43,7 +43,11 @@ You can reference the output from the linked template by referencing the output 
         }
     }
 ```
-For example, if you want to skip a resource deployment on Azure Stack, but deploy the resource on other clouds your resource configuration requires the following condition
+
+> Note: The reference function can only be used in the ```resources``` or the ```outputs``` section. You cannot use it in the variables section. For more info see the [documentation](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-template-functions-resource#reference).
+
+For example, if you want to skip a resource deployment on Azure Stack, but deploy the resource on other clouds your resource configuration requires the following condition.
+
 ``` json
     "resources": [
         {
@@ -51,7 +55,8 @@ For example, if you want to skip a resource deployment on Azure Stack, but deplo
             "type": "Microsoft.Automation",
             "name": "[variables('runBookName')]",
 ```
-The templates in this reposiotry are only provided as an example.
+
+The templates in this repository are only provided as an example.
 The storage account created in the linked template is only used for retrieving the endpoint. You can copy/fork the templates and make changes to it to better fit your need.
 
 
